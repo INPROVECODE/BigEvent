@@ -7,7 +7,6 @@ const cors = require('cors')
 const joi = require('joi')
 // 导入配置文件
 const config = require('./config')
-
 // 解析 token 的中间件
 const expressJWT = require('express-jwt')
 // 将 cors 注册为全局中间件
@@ -46,7 +45,10 @@ app.use(expressJWT({
 // 导入并注册用户路由模块
 const userRouter = require('./router/user')
 app.use('/api', userRouter)
-
+// 导入并使用用户信息路由模块
+const userinfoRouter = require('./router/userinfo')
+// 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
+app.use('/my', userinfoRouter)
 // 调用 app.listen 方法，指定端口号并启动web服务器
 app.listen(3007, function () {
   console.log('api server running at http://127.0.0.1:3007')
