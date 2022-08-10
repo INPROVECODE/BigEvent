@@ -42,6 +42,8 @@ app.use(expressJWT({
   secret: config.jwtSecretKey,
   algorithms: ['HS256']
 }).unless({ path: [/^\/api\//] }))
+// 托管静态资源文件
+app.use('/uploads', express.static('./uploads'))
 // 导入并注册用户路由模块
 const userRouter = require('./router/user')
 app.use('/api', userRouter)
@@ -53,6 +55,10 @@ app.use('/my', userinfoRouter)
 const artCateRouter = require('./router/artcate')
 // 为文章分类的路由挂载统一的访问前缀 /my/article
 app.use('/my/article', artCateRouter)
+// 导入并使用文章路由模块
+const articleRouter = require('./router/article')
+// 为文章的路由挂载统一的访问前缀 /my/article
+app.use('/my/article', articleRouter)
 // 调用 app.listen 方法，指定端口号并启动web服务器
 app.listen(3007, function () {
   console.log('api server running at http://127.0.0.1:3007')
